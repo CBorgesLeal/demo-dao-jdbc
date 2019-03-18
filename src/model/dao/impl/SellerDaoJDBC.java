@@ -1,8 +1,12 @@
 package model.dao.impl;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 
+import entities.Department;
 import entities.Seller;
 import model.dao.SellerDao;
 
@@ -34,7 +38,33 @@ public class SellerDaoJDBC implements SellerDao {
 
 	@Override
 	public Seller findById(Integer id) {
-		// TODO Auto-generated method stub
+		
+		PreparedStatement pst = null;
+		ResultSet rs = null;
+		
+		try {
+			pst = conn.prepareStatement(
+					"SELECT seller.*, department.name AS depName "
+					+ "FROM seller "
+					+ "INNER JOIN department "
+					+ "ON seller.departmentid = department.id "
+					+ "WHERE seller.id=?"
+					);
+			
+			pst.setInt(1, id);
+			
+			rs = pst.executeQuery();
+			
+			while (rs.next()) {
+				Department dep = new Department();
+				dep.setName(rs.getString(7));
+				
+			}
+					
+		} catch (SQLException e) {
+			// TODO: handle exception
+		}
+		
 		return null;
 	}
 
