@@ -7,6 +7,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Properties;
 
 public class DB {
@@ -49,17 +50,21 @@ public class DB {
 	}
 	
 	/**
-	 * Fecha a conexão, o preparedstatement e o resultset
+	 * Fecha o statement
 	 */
-	public static void closeConnection(PreparedStatement pst, ResultSet rs, Connection conn) {
+	public static void closeStatement(Statement st) {
 				
-		if (pst != null) {
+		if (st != null) {
 			try {
-				pst.close();
+				st.close();
 			} catch (SQLException e) {
 				throw new DBException(e.getMessage());
 			}
 		}
+		
+	}
+	
+	public static void closeResultSet(ResultSet rs) {
 		
 		if (rs != null) {
 			try {
@@ -69,6 +74,11 @@ public class DB {
 			}
 		}
 		
+	}
+
+	
+	public static void closeConnection(Connection conn) {
+		
 		if (conn != null) {
 			try {
 				conn.close();
@@ -76,5 +86,6 @@ public class DB {
 				throw new DBException(e.getMessage());
 			}
 		}
+		
 	}
 }
